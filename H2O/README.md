@@ -25,3 +25,20 @@ import h2o
 h2o.init()
 h2o.demo("glm")
 ```
+
+## Data Sources
+
+> Insect Sound
+` http://www.timeseriesclassification.com/description.php?Dataset=InsectSound `
+
+> Electric Devices
+` http://www.timeseriesclassification.com/description.php?Dataset=ElectricDevices `
+
+> Face Detection
+` http://www.timeseriesclassification.com/description.php?Dataset=FaceDetection `
+
+> Melbourne Pedestrian
+` http://www.timeseriesclassification.com/description.php?Dataset=MelbournePedestrian `
+
+> Mushroom Dataset
+` https://archive.ics.uci.edu/ml/datasets/Secondary+Mushroom+Dataset `

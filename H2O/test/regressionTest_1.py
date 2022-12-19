@@ -2,7 +2,10 @@ from time import time
 from datetime import datetime
 import h2o
 from h2o.automl import H2OAutoML
-h2o.init()
+
+h2o.connect(
+    url = "http://34.79.223.138:80"
+)
 
 # Use local data file or download from GitHub
 import os
@@ -15,6 +18,7 @@ else:
 
 # Load data into H2O
 df = h2o.import_file(data_path)
+print(df.describe())
 
 y = "HourlyEnergyOutputMW"
 splits = df.split_frame(ratios = [0.8], seed = 1)
@@ -27,12 +31,13 @@ aml.train(y = y, training_frame = train, leaderboard_frame = test)
 
 print("Execution Time :", time() - s)
 
-aml.leaderboard.head()
+print(aml.leaderboard.head())
 
 #Predict
 pred = aml.predict(test)
 
 #Performance
 perf = aml.leader.model_performance(test)
+print(perf)
 
-h2o.remove(aml)
+# h2o.remove(aml)

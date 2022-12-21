@@ -16,6 +16,8 @@ ALGORITHMS = [
     "StackedEnsemble"
     ]
 
+ADDRESS = "http://35.195.229.185:80"
+
 class test:
 
     def __init__(self, h2o):
@@ -67,10 +69,12 @@ class test:
             "event_log" : aml.event_log.as_data_frame().to_dict()
         }
         self.logs.append(log)
+        self.logs_save()
+        h2o.remove(aml)
 
     def classification2(self, max_runtime_secs = 0, max_models = None, include_algos = None):
         # Read data
-        raw_data = loadarff('data/ElectricDevices_TRAIN.arff')
+        raw_data = loadarff('H2O/test/data/ElectricDevices_TRAIN.arff')
         df_data = pd.DataFrame(raw_data[0])
 
         # Import Data
@@ -82,19 +86,22 @@ class test:
         x.remove(y)
 
         # AutoML engine
+        start_time = datetime.now()
+        s = time()
         aml = H2OAutoML(
             max_runtime_secs = max_runtime_secs,
             max_models = max_models,
             include_algos = include_algos,
             project_name = "classification_test_" + datetime.now().strftime("%Y-%m-%dT%H.%M.%S"))
         aml.train(x = x, y = y, training_frame = hf)
+        end_time = datetime.now()
 
         # Get learderboard
         lb = aml.leaderboard.as_data_frame().to_dict()
 
         # Logging
         log = {
-            "experiment" : "classification_1",
+            "experiment" : "classification_2",
             "max_runtime_secs" : max_runtime_secs,
             "max_models" : max_models,
             "include_algos" : include_algos,
@@ -105,6 +112,8 @@ class test:
             "event_log" : aml.event_log.as_data_frame().to_dict()
         }
         self.logs.append(log)
+        self.logs_save()
+        h2o.remove(aml)
 
     def classification3(self, max_runtime_secs = 0, max_models = None, include_algos = None):
         # Read data
@@ -119,19 +128,22 @@ class test:
         x.remove(y)
 
         # AutoML engine
+        start_time = datetime.now()
+        s = time()
         aml = H2OAutoML(
             max_runtime_secs = max_runtime_secs,
             max_models = max_models,
             include_algos = include_algos,
             project_name = "classification_test_" + datetime.now().strftime("%Y-%m-%dT%H.%M.%S"))
         aml.train(x = x, y = y, training_frame = hf)
+        end_time = datetime.now()
 
         # Get learderboard
         lb = aml.leaderboard.as_data_frame().to_dict()
 
         # Logging
         log = {
-            "experiment" : "classification_1",
+            "experiment" : "classification_3",
             "max_runtime_secs" : max_runtime_secs,
             "max_models" : max_models,
             "include_algos" : include_algos,
@@ -142,6 +154,8 @@ class test:
             "event_log" : aml.event_log.as_data_frame().to_dict()
         }
         self.logs.append(log)
+        self.logs_save()
+        h2o.remove(aml)
 
     def classification4(self, max_runtime_secs = 0, max_models = None, include_algos = None):
         # Read data
@@ -157,19 +171,22 @@ class test:
         x.remove(y)
 
         # AutoML engine
+        start_time = datetime.now()
+        s = time()
         aml = H2OAutoML(
             max_runtime_secs = max_runtime_secs,
             max_models = max_models,
             include_algos = include_algos,
             project_name = "classification_test_" + datetime.now().strftime("%Y-%m-%dT%H.%M.%S"))
         aml.train(x = x, y = y, training_frame = hf)
+        end_time = datetime.now()
 
         # Get learderboard
         lb = aml.leaderboard.as_data_frame().to_dict()
 
         # Logging
         log = {
-            "experiment" : "classification_1",
+            "experiment" : "classification_4",
             "max_runtime_secs" : max_runtime_secs,
             "max_models" : max_models,
             "include_algos" : include_algos,
@@ -180,6 +197,8 @@ class test:
             "event_log" : aml.event_log.as_data_frame().to_dict()
         }
         self.logs.append(log)
+        self.logs_save()
+        h2o.remove(aml)
 
 
     def regression1(self, max_runtime_secs = 0, max_models = None, include_algos = None):
@@ -196,20 +215,21 @@ class test:
         test = splits[1]
     
         # AutoML engine
+        start_time = datetime.now()
         aml = H2OAutoML(
             max_runtime_secs = max_runtime_secs,
             max_models = max_models,
             include_algos = include_algos,
             project_name = "regression_test_" + datetime.now().strftime("%Y-%m-%dT%H.%M.%S"))
-        aml.train(x = x, y = y, training_frame = hf)
+        aml.train(y = y, training_frame = train, leaderboard_frame = test)
+        end_time = datetime.now()
 
         # Get learderboard
         lb = aml.leaderboard.as_data_frame().to_dict()
 
-
         # Logging
         log = {
-            "experiment" : "classification_1",
+            "experiment" : "regression_1",
             "max_runtime_secs" : max_runtime_secs,
             "max_models" : max_models,
             "include_algos" : include_algos,
@@ -220,22 +240,5 @@ class test:
             "event_log" : aml.event_log.as_data_frame().to_dict()
         }
         self.logs.append(log)
-
-
-# h2o.connect(
-#     url = "http://34.79.223.138:80"
-# )
-
-h2o.init()
-
-experiments = test(h2o)
-
-for algo in ALGORITHMS:
-    experiments.classification1(max_runtime_secs=400, include_algos=[algo])
-
-experiments.classification1(max_runtime_secs=600)
-experiments.classification2(max_runtime_secs=600)
-experiments.classification3(max_runtime_secs=600)
-experiments.regression1(max_runtime_secs=600)
-
-experiments.logs_save()
+        self.logs_save()
+        h2o.remove(aml)

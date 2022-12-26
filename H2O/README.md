@@ -1,4 +1,4 @@
-## Installation
+## H2O Installation
 
 1. Install dependencies
 
@@ -28,6 +28,9 @@ h2o.demo("glm")
 
 ## Data Sources
 
+> Product Backorder
+` https://www.kaggle.com/competitions/untadta/data`
+
 > Insect Sound
 ` http://www.timeseriesclassification.com/description.php?Dataset=InsectSound `
 
@@ -42,3 +45,6 @@ h2o.demo("glm")
 
 > Mushroom Dataset
 ` https://archive.ics.uci.edu/ml/datasets/Secondary+Mushroom+Dataset `
+
+> Combined Cycle Power Plant
+` http://archive.ics.uci.edu/ml/datasets/Combined+Cycle+Power+Plant`
